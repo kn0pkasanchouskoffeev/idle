@@ -1,0 +1,21 @@
+from tkinter import *
+from tkinter import messagebox as mb
+root = Tk()
+root.title("Поле игры")
+x_per = 1
+colors = ['grey','grey','black','black','grey','black','grey','black','black','black']
+
+holst = Canvas(root, width=300, height=300, bg='white')
+holst.pack()
+
+for index in range(10):
+    holst.create_rectangle(index*30,0,   index*30+30,30,   fill=colors[index],outline='black',width=2)
+
+def keypress(event): 
+    global x_per
+    if event.keycode == 102:
+        x_per += 1
+    elif event.keycode == 100:
+        x_per -= 1
+holst.create_oval((x_per-1)*30+5,5,(x_per-1)*30+5+20,25,fill='yellow',outline='black')
+root.mainloop()
