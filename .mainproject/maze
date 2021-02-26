@@ -1,0 +1,79 @@
+from tkinter import *
+from tkinter import messagebox as mb
+root = Tk()
+root.title("Поле игры")
+x_per = 1
+y_per = 1
+colors = [
+    [0,0,1,1,0,1,0,1,1,1],
+    [1,0,1,1,0,0,0,1,0,0],
+    [0,0,1,0,0,0,1,0,0,0],
+    [0,1,0,1,1,0,0,0,0,1],
+    [0,0,0,0,0,0,1,0,0,1],
+    [0,1,1,1,0,1,1,1,0,0],
+    [1,1,1,1,1,0,0,0,0,0],
+    [0,0,1,1,0,0,1,1,0,0],
+    [0,1,0,1,0,1,0,1,1,1],
+    [0,1,1,1,0,0,0,0,0,0]
+    ]
+
+
+
+    
+
+holst = Canvas(root, width=300, height=300, bg='white')
+holst.focus_set()
+holst.pack()
+
+for x in range(10):
+    for y in range(10):
+        if colors[y][x] == 0:
+            color = "grey"
+        else:
+            color = "black"
+    
+        holst.create_rectangle(x*30,y*30,   x*30+30,y*30+30,   fill=color,outline='grey',width=2)
+        
+player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
+
+def up(event):
+    global y_per,x_per
+    y_per -= 1
+    holst.move(player, 0, -30)
+    if colors[y_per-1][x_per-1] == 1:
+        holst.move(player, 0, 30)
+        y_per += 1    
+def down(event):
+    global y_per,x_per
+    y_per += 1
+    holst.move(player, 0, 30)
+    if colors[y_per-1][x_per-1] == 1:
+        holst.move(player, 0, -30)
+        y_per -= 1 
+def right(event):
+    global y_per,x_per
+    x_per += 1
+    holst.move(player, 30, 0)
+    if colors[y_per-1][x_per-1] == 1:
+        holst.move(player, -30, 0)
+        x_per -= 1 
+def left(event):
+    global y_per,x_per
+    x_per -= 1
+    holst.move(player, -30, 0)
+    if colors[y_per-1][x_per-1] == 1:
+        holst.move(player, 30, 0)
+        x_per += 1 
+holst.bind('<Left>', left)
+holst.bind('<Right>', right)
+holst.bind('<Down>', down)
+holst.bind('<Up>', up)
+'''
+def keypress(event): 
+    global x_per
+    if event.keycode == 102:
+        x_per += 1
+    elif event.keycode == 100:
+        x_per -= 1
+'''
+root.mainloop()
