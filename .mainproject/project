@@ -1,10 +1,11 @@
 from tkinter import *
-from tkinter import messagebox as mb
+from random import *
 root = Tk()
 root.title("Поле игры")
 x_per = 1
 y_per = 1
-colors = [
+maps=[]
+maps.append([
     [0,0,1,1,0,1,0,1,1,1],
     [1,0,1,1,0,0,0,1,0,0],
     [0,0,1,0,0,0,1,0,0,0],
@@ -12,22 +13,82 @@ colors = [
     [0,0,0,0,0,0,1,0,0,1],
     [0,1,1,1,0,1,1,1,0,0],
     [1,1,1,1,1,0,0,0,0,0],
-    [0,0,1,1,0,0,1,1,0,0],
+    [0,0,0,0,0,0,1,1,0,0],
     [0,1,0,1,0,1,0,1,1,1],
     [0,1,1,1,0,0,0,0,0,0]
-    ]
-
-
-
-    
+    ])
+maps.append([
+    [0,1,0,1,0,0,0,1,1,0],
+    [0,0,0,1,0,0,0,1,0,0],
+    [1,1,0,0,0,1,0,0,0,1],
+    [0,0,0,1,0,1,1,1,0,0],
+    [0,1,1,0,0,0,0,1,0,1],
+    [0,1,1,1,0,1,0,1,0,0],
+    [0,0,0,0,1,0,0,1,1,1],
+    [0,1,1,0,0,1,1,0,0,0],
+    [0,1,0,1,0,0,0,0,1,1],
+    [1,0,0,0,0,1,1,1,1,1]
+    ])
+maps.append([
+    [1,1,0,0,1,0,1,0,0,1],
+    [0,0,0,1,1,0,0,0,0,0],
+    [0,1,1,0,0,0,1,0,0,1],
+    [0,0,0,1,0,0,1,0,1,0],
+    [1,0,0,1,1,1,0,0,1,0],
+    [0,0,1,0,0,0,0,1,1,0],
+    [1,1,1,0,0,1,1,0,0,0],
+    [0,0,0,0,0,1,1,0,1,1],
+    [0,1,1,1,1,0,0,0,1,0],
+    [0,0,0,0,0,0,0,0,0,0]
+    ])
+maps.append([
+    [0,0,0,1,0,1,1,0,0,0],
+    [0,1,1,0,0,1,0,0,1,1],
+    [0,0,0,1,1,0,1,0,0,0],
+    [1,1,0,0,0,0,0,1,1,0],
+    [1,0,0,1,0,1,0,0,0,1],
+    [0,1,0,1,0,0,1,1,0,0],
+    [0,1,0,1,0,1,0,1,1,1],
+    [0,1,0,1,0,0,0,0,1,0],
+    [0,0,0,1,1,1,0,1,1,0],
+    [0,1,1,0,0,0,0,0,0,0]
+    ])
+maps.append([
+    [1,0,1,0,1,0,1,0,1,0],
+    [0,0,1,0,0,0,1,0,0,1],
+    [1,0,0,1,0,1,0,0,1,0],
+    [0,1,0,0,0,1,0,1,0,1],
+    [1,0,0,1,0,0,0,0,0,0],
+    [0,0,1,0,0,0,1,0,1,1],
+    [1,1,0,0,1,1,0,0,0,0],
+    [0,0,0,1,0,0,0,0,1,1],
+    [1,0,0,1,0,0,1,0,0,0],
+    [0,1,0,1,0,1,0,1,0,1]
+    ])    
 
 holst = Canvas(root, width=300, height=300, bg='white')
 holst.focus_set()
 holst.pack()
 
+level = randint(0, 4)
+if level == 0:
+    x_per = 1
+    y_per = 1
+elif level == 1:
+    x_per = 6
+    y_per = 2
+elif level == 2:
+    x_per = 6
+    y_per = 1
+elif level == 3:
+    x_per = 5
+    y_per = 5
+elif level == 4:
+    x_per = 6
+    y_per = 5
 for x in range(10):
     for y in range(10):
-        if colors[y][x] == 0:
+        if maps[level][y][x] == 0:
             color = "grey"
         else:
             color = "black"
@@ -37,33 +98,37 @@ for x in range(10):
 player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
 
 def up(event):
-    global y_per,x_per
-    y_per -= 1
-    holst.move(player, 0, -30)
-    if colors[y_per-1][x_per-1] == 1:
-        holst.move(player, 0, 30)
-        y_per += 1    
-def down(event):
-    global y_per,x_per
-    y_per += 1
-    holst.move(player, 0, 30)
-    if colors[y_per-1][x_per-1] == 1:
+    global y_per,x_per,level
+    if y_per > 1:
+        y_per -= 1
         holst.move(player, 0, -30)
-        y_per -= 1 
+        if maps[level][y_per-1][x_per-1] == 1:
+            holst.move(player, 0, 30)
+            y_per += 1    
+def down(event):
+    global y_per,x_per,level
+    if y_per < 10:
+        y_per += 1
+        holst.move(player, 0, 30)
+        if maps[level][y_per-1][x_per-1] == 1:
+            holst.move(player, 0, -30)
+            y_per -= 1 
 def right(event):
-    global y_per,x_per
-    x_per += 1
-    holst.move(player, 30, 0)
-    if colors[y_per-1][x_per-1] == 1:
-        holst.move(player, -30, 0)
-        x_per -= 1 
-def left(event):
-    global y_per,x_per
-    x_per -= 1
-    holst.move(player, -30, 0)
-    if colors[y_per-1][x_per-1] == 1:
+    global y_per,x_per,level
+    if x_per < 10:
+        x_per += 1
         holst.move(player, 30, 0)
-        x_per += 1 
+        if maps[level][y_per-1][x_per-1] == 1:
+            holst.move(player, -30, 0)
+            x_per -= 1 
+def left(event):
+    global y_per,x_per,level
+    if x_per > 1:
+        x_per -= 1
+        holst.move(player, -30, 0)
+        if maps[level][y_per-1][x_per-1] == 1:
+            holst.move(player, 30, 0)
+            x_per += 1 
 holst.bind('<Left>', left)
 holst.bind('<Right>', right)
 holst.bind('<Down>', down)
