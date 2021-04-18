@@ -3,8 +3,8 @@ from random import *
 root = Tk()
 difficulty = 0
 root.title("Поле игры")
-while difficulty != 'легко' and difficulty != 'средне' and difficulty != 'сложно':
-    difficulty = input('Выберите сложность (легко средне сложно)')
+while difficulty != 'E' and difficulty != 'M' and difficulty != 'H':
+    difficulty = input('Выберите уровень сложности (легкий - E, средний - M, сложный - H)')
 x_per = 1
 y_per = 1
 level = 0
@@ -100,6 +100,7 @@ def generatemap():
         y_per = 5
 generatemap()
 def visualmap():
+    global color,maps,level,x_per,y_per,player,x,y
     for x in range(10):
         for y in range(10):
             if maps[level][y][x] == 0:
@@ -114,191 +115,199 @@ def visualmap():
             holst.create_rectangle(x*30,y*30,   x*30+30,y*30+30,   fill=color,outline='grey',width=2)
             
     player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
-
+visualmap()
 def up(event):
-    global y_per,x_per,level
+    global y_per,x_per,level,player,treasure
     if y_per > 1:
         y_per -= 1
-        holst.move(player, 0, 30)
+        holst.move(player, 0, -30)
         if maps[level][y_per-1][x_per-1] == 1:
-            holst.move(player, 0, -30)
+            holst.move(player, 0, 30)
             y_per += 1
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('стена')
             else:
                 print('сверху стена')
         elif maps[level][y_per-1][x_per-1] == 2:
             if treasure == 1:
                 generatemap()
-                if difficulty == 'сложно':
+                visualmap()
+                if difficulty == 'H':
                     print('финиш!')
                 else:
                     print('шаг вверх сделан и там финиш!')
             else:
-                if difficulty == 'легко':
+                if difficulty == 'E':
                     print('шаг вверх сделан, там финиш, но ты ещё не нашёл клад!')
-                elif difficulty == 'средне':
+                elif difficulty == 'M':
                     print('шаг вверх сделан')
                 else:
                     print('шаг сделан')
         elif maps[level][y_per-1][x_per-1] == 3:
             treasure = 1
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('клад!')
             else:
                 print('шаг вверх сделан и там клад!')
         else:
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('шаг сделан')
             else:
                 print('шаг вверх сделан')
     else:
-        if difficulty == 'легко':
+        if difficulty == 'E':
             print('сверху край')
-        elif difficulty == 'средне':
+        elif difficulty == 'M':
             print('сверху стена')
         else:
             print('стена')
 def down(event):
-    global y_per,x_per,level
+    global y_per,x_per,level,player,treasure
     if y_per < 10:
         y_per += 1
         holst.move(player, 0, 30)
         if maps[level][y_per-1][x_per-1] == 1:
             holst.move(player, 0, -30)
             y_per -= 1
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('стена')
             else:
                 print('снизу стена')
         elif maps[level][y_per-1][x_per-1] == 2:
             if treasure == 1:
                 generatemap()
-                if difficulty == 'сложно':
+                visualmap()
+                if difficulty == 'H':
                     print('финиш!')
                 else:
                     print('шаг вниз сделан и там финиш!')
             else:
-                if difficulty == 'легко':
+                if difficulty == 'E':
                     print('шаг вниз сделан, там финиш, но ты ещё не нашёл клад!')
-                elif difficulty == 'средне':
+                elif difficulty == 'M':
                     print('шаг вниз сделан')
                 else:
                     print('шаг сделан')
         elif maps[level][y_per-1][x_per-1] == 3:
             treasure = 1
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('клад!')
             else:
                 print('шаг вниз сделан и там клад!')
         else:
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('шаг сделан')
             else:
                 print('шаг вниз сделан')
     else:
-        if difficulty == 'легко':
+        if difficulty == 'E':
             print('снизу край')
-        elif difficulty == 'средне':
+        elif difficulty == 'M':
             print('снизу стена')
         else:
             print('стена')
 def right(event):
-    global y_per,x_per,level
+    global y_per,x_per,level,player,treasure
     if x_per < 10:
         x_per += 1
         holst.move(player, 30, 0)
         if maps[level][y_per-1][x_per-1] == 1:
             holst.move(player, -30, 0)
             x_per -= 1
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('стена')
             else:
                 print('справа стена')
         elif maps[level][y_per-1][x_per-1] == 2:
             if treasure == 1:
                 generatemap()
-                if difficulty == 'сложно':
+                visualmap()
+                if difficulty == 'H':
                     print('финиш!')
                 else:
                     print('шаг вправо сделан и там финиш!')
             else:
-                if difficulty == 'легко':
+                if difficulty == 'E':
                     print('шаг вправо сделан, там финиш, но ты ещё не нашёл клад!')
-                elif difficulty == 'средне':
+                elif difficulty == 'M':
                     print('шаг вправо сделан')
                 else:
                     print('шаг сделан')
         elif maps[level][y_per-1][x_per-1] == 3:
             treasure = 1
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('клад!')
             else:
                 print('шаг вправо сделан и там клад!')
         else:
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('шаг сделан')
             else:
                 print('шаг вправо сделан')
     else:
-        if difficulty == 'легко':
+        if difficulty == 'E':
             print('справа край')
-        elif difficulty == 'средне':
+        elif difficulty == 'M':
             print('справа стена')
         else:
             print('стена')
 def left(event):
-    global y_per,x_per,level
+    global y_per,x_per,level,player,treasure
     if x_per > 1:
         x_per -= 1
         holst.move(player, -30, 0)
         if maps[level][y_per-1][x_per-1] == 1:
             holst.move(player, 30, 0)
             x_per += 1
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('стена')
             else:
                 print('слева стена')
         elif maps[level][y_per-1][x_per-1] == 2:
             if treasure == 1:
                 generatemap()
-                if difficulty == 'сложно':
+                visualmap()
+                if difficulty == 'H':
                     print('финиш!')
                 else:
                     print('шаг влево сделан и там финиш!')
             else:
-                if difficulty == 'легко':
+                if difficulty == 'E':
                     print('шаг влево сделан, там финиш, но ты ещё не нашёл клад!')
-                elif difficulty == 'средне':
+                elif difficulty == 'M':
                     print('шаг влево сделан')
                 else:
                     print('шаг сделан')
         elif maps[level][y_per-1][x_per-1] == 3:
             treasure = 1
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('клад!')
             else:
                 print('шаг влево сделан и там клад!')
         else:
-            if difficulty == 'сложно':
+            if difficulty == 'H':
                 print('шаг сделан')
             else:
                 print('шаг влево сделан')
     else:
-        if difficulty == 'легко':
+        if difficulty == 'E':
             print('слева край')
-        elif difficulty == 'средне':
+        elif difficulty == 'M':
             print('слева стена')
         else:
             print('стена')
-
+def Show(event):
+    holst.pack()
+def Hide(event):
+    holst.forget()
 
 
 holst.bind('<Left>', left)
 holst.bind('<Right>', right)
 holst.bind('<Down>', down)
 holst.bind('<Up>', up)
-
+holst.bind('<s>', Show)
+holst.bind('<h>', Hide)
 
 root.mainloop()
 
