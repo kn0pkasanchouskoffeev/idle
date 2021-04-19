@@ -8,6 +8,8 @@ while difficulty != 'E' and difficulty != 'M' and difficulty != 'H':
 x_per = 1
 y_per = 1
 level = 0
+
+
 player = 0
 treasure = 0
 maps=[]
@@ -81,8 +83,9 @@ holst.pack()
 
 
 def generatemap():
-    global level,x_per,y_per,color,player, maps,treasure
+    global level,x_per,y_per,color,player, maps,treasure,lvlcomplete
     treasure = 0
+    
     level = randint(0, 4)
     if level == 0:
         x_per = 1
@@ -146,12 +149,12 @@ def up(event):
             holst.create_rectangle((x_per-1)*30,(y_per-1)*30,(x_per-1)*30+30,  (y_per-1)*30+30, fill='purple',outline='grey',width=2)
             player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
             if treasure == 1:
-                generatemap()
+                
                 
                 if difficulty == 'H':
-                    print('финиш!')
+                    print('финиш! Нажми N')
                 else:
-                    print('шаг вверх сделан и там финиш!')
+                    print('шаг вверх сделан и там финиш! Нажми N')
             else:
                 if difficulty == 'E':
                     print('шаг вверх сделан, там финиш, но ты ещё не нашёл клад!')
@@ -207,12 +210,12 @@ def down(event):
             holst.create_rectangle((x_per-1)*30,(y_per-1)*30,(x_per-1)*30+30,  (y_per-1)*30+30, fill='purple',outline='grey',width=2)
             player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
             if treasure == 1:
-                generatemap()
+                
                 
                 if difficulty == 'H':
-                    print('финиш!')
+                    print('финиш! Нажми N')
                 else:
-                    print('шаг вниз сделан и там финиш!')
+                    print('шаг вниз сделан и там финиш! Нажми N')
             else:
                 if difficulty == 'E':
                     print('шаг вниз сделан, там финиш, но ты ещё не нашёл клад!')
@@ -269,12 +272,12 @@ def right(event):
             holst.create_rectangle((x_per-1)*30,(y_per-1)*30,(x_per-1)*30+30,  (y_per-1)*30+30, fill='purple',outline='grey',width=2)
             player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
             if treasure == 1:
-                generatemap()
+                
                 
                 if difficulty == 'H':
-                    print('финиш!')
+                    print('финиш! Нажми N')
                 else:
-                    print('шаг вправо сделан и там финиш!')
+                    print('шаг вправо сделан и там финиш! Нажми N')
             else:
                 if difficulty == 'E':
                     print('шаг вправо сделан, там финиш, но ты ещё не нашёл клад!')
@@ -330,12 +333,12 @@ def left(event):
             holst.create_rectangle((x_per-1)*30,(y_per-1)*30,(x_per-1)*30+30,  (y_per-1)*30+30, fill='purple',outline='grey',width=2)
             player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
             if treasure == 1:
-                generatemap()
+                
                 
                 if difficulty == 'H':
-                    print('финиш!')
+                    print('финиш! Нажми N')
                 else:
-                    print('шаг влево сделан и там финиш!')
+                    print('шаг влево сделан и там финиш! Нажми N')
             else:
                 if difficulty == 'E':
                     print('шаг влево сделан, там финиш, но ты ещё не нашёл клад!')
@@ -365,11 +368,18 @@ def left(event):
             print('слева стена')
         else:
             print('стена')
+def showscore(event):
+    lvlcomplete = Label(text='Пройдено уровней: ' + str(score))
 def Show(event):
     holst.pack()
 def Hide(event):
     holst.forget()
-
+def Finish(event):
+    if maps[level][y_per-1][x_per-1] == 2 and treasure == 1:
+        
+        generatemap()
+    else:
+        print('ты не находишься на финише или не нашёл клад!')
 
 holst.bind('<Left>', left)
 holst.bind('<Right>', right)
@@ -377,6 +387,7 @@ holst.bind('<Down>', down)
 holst.bind('<Up>', up)
 holst.bind('<s>', Show)
 holst.bind('<h>', Hide)
+holst.bind('<n>', Finish)
 
 root.mainloop()
 
