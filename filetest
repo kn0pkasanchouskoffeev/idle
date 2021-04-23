@@ -1,0 +1,8 @@
+file = open("score.txt", 'r')
+score = int(file.read())
+score += 1
+print(score)
+file.close()
+file2 = open("score.txt", 'w')
+file2.write(str(score))
+file2.close()
