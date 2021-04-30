@@ -8,8 +8,14 @@ while difficulty != 'E' and difficulty != 'M' and difficulty != 'H':
 x_per = 1
 y_per = 1
 level = 0
-
-
+score = -1
+high_file = open('text.txt', 'r')
+high = int(high_file.read())
+high_file.close()
+score_label = Label(text = 'Очки: ' + str(0))
+score_label.pack()
+high_label = Label(text = 'Рекорд: ' + str(high))
+high_label.pack()
 player = 0
 treasure = 0
 maps=[]
@@ -83,9 +89,18 @@ holst.pack()
 
 
 def generatemap():
-    global level,x_per,y_per,color,player, maps,treasure,lvlcomplete
+    global level,x_per,y_per,color,player, maps,treasure,score,high
     treasure = 0
-    
+    score += 1
+    score_label['text'] = 'Очки: ' + str(score)
+    if score > high:
+        high_file = open('text.txt', 'w')
+        high_file.write(str(score))
+        high_file.close()
+        high_file = open('text.txt', 'r')
+        high = int(high_file.read())
+        high_label['text'] = 'Рекорд: ' + str(high)
+        
     level = randint(0, 4)
     if level == 0:
         x_per = 1
@@ -390,4 +405,3 @@ holst.bind('<h>', Hide)
 holst.bind('<n>', Finish)
 
 root.mainloop()
-
