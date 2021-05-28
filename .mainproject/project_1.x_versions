@@ -1,5 +1,6 @@
 from tkinter import *
 from random import *
+import time
 root = Tk()
 difficulty = 0
 root.title("Поле игры")
@@ -16,8 +17,12 @@ score_label = Label(text = 'Очки: ' + str(0))
 score_label.pack()
 high_label = Label(text = 'Рекорд: ' + str(high))
 high_label.pack()
+time_label = Label(text = 'Время: ' + str(0))
+time_label.pack()
 player = 0
 treasure = 0
+resettime = 0
+timecounter = 0
 maps=[]
 maps.append([
     [0,0,1,1,0,1,0,1,1,1],
@@ -87,9 +92,8 @@ holst.pack()
 
 
 
-
 def generatemap():
-    global level,x_per,y_per,color,player, maps,treasure,score,high
+    global level,x_per,y_per,color,player, maps,treasure,score,high,resettime
     treasure = 0
     score += 1
     score_label['text'] = 'Очки: ' + str(score)
@@ -120,23 +124,9 @@ def generatemap():
     holst.create_rectangle(0,0, 300,300, fill='white')
     holst.create_rectangle((x_per-1)*30,(y_per-1)*30,(x_per-1)*30+30,  (y_per-1)*30+30, fill='grey',outline='grey',width=2)
     player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
+    resettime = 1
+
 generatemap()
-def visualmap():
-    global color,maps,level,x_per,y_per,player,x,y
-    for x in range(10):
-        for y in range(10):
-            if maps[level][y][x] == 0:
-                color = "grey"
-            elif maps[level][y][x] == 1:
-                color = "black"
-            elif maps[level][y][x] == 3:
-                color = "yellow"
-            else:
-                color = "purple"
-        
-            holst.create_rectangle(x*30,y*30,   x*30+30,y*30+30,   fill=color,outline='grey',width=2)
-            
-    player = holst.create_oval((x_per-1)*30+5,(y_per-1)*30+5,(x_per-1)*30+5+20,(y_per-1)*30+5+20,fill='yellow',outline='black')
 
 def up(event):
     global y_per,x_per,level,player,treasure
@@ -404,4 +394,18 @@ holst.bind('<s>', Show)
 holst.bind('<h>', Hide)
 holst.bind('<n>', Finish)
 
+def timecount(counter):
+    global time_label, resettime
+    time_label['text'] = 'Время: ' + str(counter)
+    
+    if resettime == 1:
+        root.after(1000, timecount,0)
+        resettime = 0
+    else:
+        root.after(1000, timecount,counter+1)
+
+timecount(0)
 root.mainloop()
+
+    
+
